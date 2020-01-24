@@ -10,105 +10,73 @@ from ast import literal_eval
 # Load world
 world = World()
 
-
 # You may uncomment the smaller graphs for development and testing purposes.
-map_file = "maps/test_line.txt"
+# map_file = "maps/test_line.txt"
 # map_file = "maps/test_cross.txt"
 # map_file = "maps/test_loop.txt"
 # map_file = "maps/test_loop_fork.txt"
-# map_file = "maps/main_maze.txt"
+map_file = "maps/main_maze.txt"
 
 # Loads the map into a dictionary
 room_graph=literal_eval(open(map_file, "r").read())
 world.load_graph(room_graph)
 
-
-
 # Print an ASCII map
-# world.print_rooms()
+world.print_rooms()
 
 player = Player(world.starting_room)
 
 # Fill this out with directions to walk
 # traversal_path = ['n', 'n']
 
-
-
-
-'''
-room_traverse algorithm:
-    -get old_room_id, old_room_exits.
-    -log_room(room_id, None) to Traversal() if no way chosen, None sets all ways to '?'
-    -randomly choose an exit
-    -travel to the exit
-    -add room_id to visited
-    -get the new_room_id, new_room_exits
-    -log_room(new_room_id, (way, way_room_id)) 
-    -update old_room: log_room(old_room_id, (way,way_room_id))
-
-get id of current room.
-create a new traversal entry of current room.
-
-go out an exit. store the direction travelled
-create a new entry for the new room id, the opposite direction is the prev_room_id.
-update the previous room id entry.  the exit taken == id of current room
-player.travel(exits[0])
-player.current_room.id
-'''
-
 graph = Traversal()
 start_room = player.current_room
-# traverse.dft(start_room,player)
-
 
 def load_rooms(world):
     for r in world.rooms:
         # print(room)
         r_id = world.rooms[r].id
-        graph.log_room(r_id)
+        graph.load_room(r_id)
 
 load_rooms(world)
 
 start_room = player.current_room
 # traverse.dft(player)
-g = graph.traverse(player)
+g = graph.explore(player)
 print(g)
 
-def test_traverse():
+# def test_traverse():
 
-    traverse = Traversal()
+#     traverse = Traversal()
 
-    start_room = player.current_room
-    traverse.log_room(start_room.id)
-    exits = start_room.get_exits()
-    جهة = random.choice(exits)  #in Arabic:  جهة pronounced "Jiha" means direction
-    player.travel(جهة)
-    next_room_id = player.current_room.id
+#     start_room = player.current_room
+#     traverse.log_room(start_room.id)
+#     exits = start_room.get_exits()
+#     جهة = random.choice(exits)  #in Arabic:  جهة pronounced "Jiha" means direction
+#     player.travel(جهة)
+#     next_room_id = player.current_room.id
 
-    if جهة == 'n':
-        back_exit = 's'
-    if جهة == 's':
-        back_exit = 'n'
-    if جهة == 'e':
-        back_exit = 'w'
-    if جهة == 'w':
-        back_exit = 'e'
+#     if جهة == 'n':
+#         back_exit = 's'
+#     if جهة == 's':
+#         back_exit = 'n'
+#     if جهة == 'e':
+#         back_exit = 'w'
+#     if جهة == 'w':
+#         back_exit = 'e'
 
-    print('traverse', traverse)
-    back_exit = (back_exit,start_room.id)
-    traverse.log_room(player.current_room.id, back_exit)
-    print('traverse', traverse)
-    way = (جهة,player.current_room.id)
-    traverse.log_room(start_room.id,way)
-    print('traverse', traverse)
-
-
-    traverse.stack.push(10)
-    traverse.stack.push(20)
-    traverse.dft(start_room,player)
+#     print('traverse', traverse)
+#     back_exit = (back_exit,start_room.id)
+#     traverse.log_room(player.current_room.id, back_exit)
+#     print('traverse', traverse)
+#     way = (جهة,player.current_room.id)
+#     traverse.log_room(start_room.id,way)
+#     print('traverse', traverse)
 
 
-
+#     traverse.stack.push(10)
+#     traverse.stack.push(20)
+#     traverse.dft(start_room,player)
 
 # traversal.add_room(room.id)
 
@@ -122,9 +90,7 @@ def test_traverse():
 #     exits.insert(3,'?')
 
 
-
-traversal_path = []
-
+traversal_path = graph.path
 
 
 # TRAVERSAL TEST
@@ -132,17 +98,17 @@ visited_rooms = set()
 player.current_room = world.starting_room
 visited_rooms.add(player.current_room)
 
-# for move in traversal_path:
-#     player.travel(move)
-#     visited_rooms.add(player.current_room)
+print('room_graph', len(room_graph))
 
+for move in traversal_path:
+    player.travel(move)
+    visited_rooms.add(player.current_room)
 
-
-# if len(visited_rooms) == len(room_graph):
-#     print(f"TESTS PASSED: {len(traversal_path)} moves, {len(visited_rooms)} rooms visited")
-# else:
-#     print("TESTS FAILED: INCOMPLETE TRAVERSAL")
-#     print(f"{len(room_graph) - len(visited_rooms)} unvisited rooms")
+if len(visited_rooms) == len(room_graph):
+    print(f"TESTS PASSED: {len(traversal_path)} moves, {len(visited_rooms)} rooms visited")
+else:
+    print("TESTS FAILED: INCOMPLETE TRAVERSAL")
+    print(f"{len(room_graph) - len(visited_rooms)} unvisited rooms")
 
 
 

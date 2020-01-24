@@ -9,5 +9,5 @@ class Player:
                 next_room.print_room_description(self)
             return next_room.id
         else:
-            print("You cannot move in that direction.")
+            # print("You cannot move in that direction.")
             return None

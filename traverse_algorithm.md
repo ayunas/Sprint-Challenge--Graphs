@@ -17,3 +17,24 @@
                                  <li>room = new_room</li>
 </ol>
 
+
+'''
+old room_traverse algorithm:
+    -get old_room_id, old_room_exits.
+    -log_room(room_id, None) to Traversal() if no way chosen, None sets all ways to '?'
+    -randomly choose an exit
+    -travel to the exit
+    -add room_id to visited
+    -get the new_room_id, new_room_exits
+    -log_room(new_room_id, (way, way_room_id)) 
+    -update old_room: log_room(old_room_id, (way,way_room_id))
+
+get id of current room.
+create a new traversal entry of current room.
+
+go out an exit. store the direction travelled
+create a new entry for the new room id, the opposite direction is the prev_room_id.
+update the previous room id entry.  the exit taken == id of current room
+player.travel(exits[0])
+player.current_room.id
+'''

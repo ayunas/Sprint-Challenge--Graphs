@@ -6,8 +6,9 @@ class Traversal:
     def __init__(self):
         self.graph = {}
         self.stack = Stack()
+        self.path = []
     
-    def log_room(self,id,waze=None):
+    def load_room(self,id,waze=None):
         # directions=['?','?','?','?']
         compass = {'n':'?','s':'?','e':'?','w':'?'}
         if waze:
@@ -45,13 +46,13 @@ class Traversal:
             return (self.graph[old_room.id],self.graph[new_room.id])
         
 
-    def traverse(self,player):
+    def explore(self,player):
         room = player.current_room
         print('starting room', room.id)
-        room.get_exits()
-        waze = self.graph[room.id]
-        exit_rooms = list(waze.values())
-        exit_ways = list(waze)
+        # room.get_exits()
+        # waze = self.graph[room.id]
+        # exit_rooms = list(waze.values())
+        # exit_ways = list(waze)
         
         explored = set()
         # while '?' in room_exits:  #while self.graph[room.id] has an unexplored exit
@@ -75,16 +76,14 @@ class Traversal:
                 # print('update move was none', x)
                 
             else: #moved to the new room
+                self.path.append(way)
                 new_room = player.current_room
                 y = self.update_rooms(way[0],room, new_room)
                 exit_rooms = list(self.graph[new_room.id].values())
-                print('exit_rooms',exit_rooms)
+                # print('exit_rooms',exit_rooms)
                 if '?' not in exit_rooms:
                     explored.add(new_room)
                 room = new_room
-                
-
-        print('explored', explored)
         return self.graph
 
     def dft(self,player):
