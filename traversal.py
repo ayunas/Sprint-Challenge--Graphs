@@ -50,27 +50,41 @@ class Traversal:
         print('starting room', room.id)
         room.get_exits()
         waze = self.graph[room.id]
-        room_exits = list(waze.items())
+        exit_rooms = list(waze.values())
+        exit_ways = list(waze)
         
+        explored = set()
         # while '?' in room_exits:  #while self.graph[room.id] has an unexplored exit
         # print(list(self.graph[room.id].items()))
-        while '?' in list(self.graph[room.id].values()):
+        
+        # while '?' in list(self.graph[room.id].values()):
+        # while '?' in exit_rooms:
+        while len(explored) < len(list(self.graph)):
+            # print('explored', len(explored))
+            # print('self.graph', len(list(self.graph.items())))
+
             exits = list(self.graph[room.id].items())
-            print('room.id', room.id, 'exits', exits)
+            # print('room.id', room.id, 'exits', exits)
             way,i = random.choice(exits)
-            print('random way',way)
+            # print('random way',way)
             move = player.travel(way)
-            print('moved to room_id:', move)
+            # print('moved to room_id:', move)
 
             if move == None:
                 x = self.update_rooms(way[0],room)
-                print('update move was none', x)
+                # print('update move was none', x)
                 
             else: #moved to the new room
                 new_room = player.current_room
                 y = self.update_rooms(way[0],room, new_room)
-                print(f'update move was {way}', y)
+                exit_rooms = list(self.graph[new_room.id].values())
+                print('exit_rooms',exit_rooms)
+                if '?' not in exit_rooms:
+                    explored.add(new_room)
                 room = new_room
+                
+
+        print('explored', explored)
         return self.graph
 
     def dft(self,player):
