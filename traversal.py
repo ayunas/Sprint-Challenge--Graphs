@@ -33,14 +33,17 @@ class Traversal:
     
     def update_rooms(self,way,old_room,new_room=None):
         if new_room == None:
-            self.log_room(old_room.id, (way,None))
-            flip = self.flip_way(way)
+            # self.log_room(old_room.id, (way,None))
+            self.graph[old_room.id][way] = None
             return self.graph[old_room.id]
         else: #new_room has been passed in
-            self.log_room(old_room.id, (way,new_room.id))
+            # self.log_room(old_room.id, (way,new_room.id))
+            self.graph[old_room.id][way] = new_room.id
             flip = self.flip_way(way)
-            self.log_room(new_room.id, (flip,old_room.id))
+            # self.log_room(new_room.id, (flip,old_room.id))
+            self.graph[new_room.id][flip] = old_room.id
             return (self.graph[old_room.id],self.graph[new_room.id])
+        
 
     def traverse(self,player):
         room = player.current_room
@@ -48,23 +51,27 @@ class Traversal:
         room.get_exits()
         waze = self.graph[room.id]
         room_exits = list(waze.items())
+        
         # while '?' in room_exits:  #while self.graph[room.id] has an unexplored exit
         # print(list(self.graph[room.id].items()))
-        exits = list(self.graph[room.id].items())
-        print(exits)
-        way,i = random.choice(exits)
-        print('way',way)
-        move = player.travel(way)
-        print('moved to room_id:', move)
+        while '?' in list(self.graph[room.id].values()):
+            exits = list(self.graph[room.id].items())
+            print('room.id', room.id, 'exits', exits)
+            way,i = random.choice(exits)
+            print('random way',way)
+            move = player.travel(way)
+            print('moved to room_id:', move)
 
-        if move == None:
-            x = self.update_rooms(way[0],room)
-            print('update move was none', x)
-        else: #moved to the new room
-            new_room = player.current_room
-            y = self.update_rooms(way[0],room, new_room)
-            print(f'update move was {way}', y)
-    
+            if move == None:
+                x = self.update_rooms(way[0],room)
+                print('update move was none', x)
+                
+            else: #moved to the new room
+                new_room = player.current_room
+                y = self.update_rooms(way[0],room, new_room)
+                print(f'update move was {way}', y)
+                room = new_room
+        return self.graph
 
     def dft(self,player):
         old_room = player.current_room

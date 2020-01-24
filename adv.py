@@ -71,8 +71,8 @@ load_rooms(world)
 
 start_room = player.current_room
 # traverse.dft(player)
-graph.traverse(player)
-
+g = graph.traverse(player)
+print(g)
 
 def test_traverse():
 
