@@ -36,6 +36,16 @@ player = Player(world.starting_room)
 
 
 '''
+room_traverse algorithm:
+    -get old_room_id, old_room_exits.
+    -log_room(room_id, None) to Traversal() if no way chosen, None sets all ways to '?'
+    -randomly choose an exit
+    -travel to the exit
+    -add room_id to visited
+    -get the new_room_id, new_room_exits
+    -log_room(new_room_id, (way, way_room_id)) 
+    -update old_room: log_room(old_room_id, (way,way_room_id))
+
 get id of current room.
 create a new traversal entry of current room.
 
@@ -46,35 +56,61 @@ player.travel(exits[0])
 player.current_room.id
 '''
 
-traverse = Traversal()
+graph = Traversal()
 start_room = player.current_room
-traverse.add_room(start_room.id)
-exits = start_room.get_exits()
-جهة = random.choice(exits)  #in Arabic:  جهة pronounced "Jiha" means direction
-player.travel(جهة)
-next_room_id = player.current_room.id
+# traverse.dft(start_room,player)
 
-if جهة == 'n':
-    back_exit = 's'
-if جهة == 's':
-    back_exit = 'n'
-if جهة == 'e':
-    back_exit = 'w'
-if جهة == 'w':
-    back_exit = 'e'
 
-print('traverse', traverse)
-back_exit = (back_exit,start_room.id)
-traverse.add_room(player.current_room.id, back_exit)
-print('traverse', traverse)
-way = (جهة,player.current_room.id)
-traverse.add_room(start_room.id,way)
-print('traverse', traverse)
+def load_rooms(world):
+    for r in world.rooms:
+        # print(room)
+        r_id = world.rooms[r].id
+        graph.log_room(r_id)
+
+load_rooms(world)
+
+start_room = player.current_room
+# traverse.dft(player)
+graph.traverse(player)
+
+
+def test_traverse():
+
+    traverse = Traversal()
+
+    start_room = player.current_room
+    traverse.log_room(start_room.id)
+    exits = start_room.get_exits()
+    جهة = random.choice(exits)  #in Arabic:  جهة pronounced "Jiha" means direction
+    player.travel(جهة)
+    next_room_id = player.current_room.id
+
+    if جهة == 'n':
+        back_exit = 's'
+    if جهة == 's':
+        back_exit = 'n'
+    if جهة == 'e':
+        back_exit = 'w'
+    if جهة == 'w':
+        back_exit = 'e'
+
+    print('traverse', traverse)
+    back_exit = (back_exit,start_room.id)
+    traverse.log_room(player.current_room.id, back_exit)
+    print('traverse', traverse)
+    way = (جهة,player.current_room.id)
+    traverse.log_room(start_room.id,way)
+    print('traverse', traverse)
+
+
+    traverse.stack.push(10)
+    traverse.stack.push(20)
+    traverse.dft(start_room,player)
+
+
+
 
 # traversal.add_room(room.id)
-
-
-
 
 # if 'n' not in exits:
 #     exits.insert(0,'?')
