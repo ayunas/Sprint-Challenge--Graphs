@@ -14,8 +14,8 @@ world = World()
 # map_file = "maps/test_line.txt"
 # map_file = "maps/test_cross.txt"
 # map_file = "maps/test_loop.txt"
-map_file = "maps/test_loop_fork.txt"
-# map_file = "maps/main_maze.txt"
+# map_file = "maps/test_loop_fork.txt"
+map_file = "maps/main_maze.txt"
 
 # Loads the map into a dictionary
 room_graph=literal_eval(open(map_file, "r").read())
@@ -53,9 +53,7 @@ g = traversal.explore(player)
 
 # dft = traversal.dft(4)
 # start_id = world.starting_room.id
-start = world.rooms[4]
-print('player starting room: ', start.id)
-follow_dft = traversal.follow_dft(player,world,start.id)
+
 # print('follow_dft', follow_dft)
 # print('steps to explore map: ', len(follow_dft))
 
@@ -72,6 +70,12 @@ follow_dft = traversal.follow_dft(player,world,start.id)
 
 
 # traversal_path = graph.path
+
+# start = world.rooms[0]
+start = world.starting_room
+print('player starting room: ', start.id)
+follow_dft = traversal.follow_dft(player,world,start.id)
+
 traversal_path = follow_dft
 
 
@@ -96,7 +100,7 @@ for i,room_id in enumerate(traversal_path):
 
     try:
         way = way[0]
-    except:
+    except: #there was no way found matching the next_room_id in the traversal path. probably reached the end of the list
         break
 
     player.travel(way)
@@ -105,8 +109,8 @@ for i,room_id in enumerate(traversal_path):
 visits = set()
 for v in visited_rooms:
     visits.add(v.id)
-print('visits', visits)
-print('traversal_path', traversal_path)
+# print('visits', visits)
+# print('traversal_path', traversal_path)
 
 
 if len(visited_rooms) == len(room_graph):
