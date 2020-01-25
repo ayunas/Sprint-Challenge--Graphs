@@ -41,8 +41,8 @@ def load_rooms(world):
 load_rooms(world)
 
 # start_room = player.current_room
-start_room = traversal.graph[4]
-end_room = traversal.graph[14]
+# start_room_id = traversal.graph[0]
+# end_room = traversal.graph[14]
 
 # traverse.dft(player)
 g = traversal.explore(player)
@@ -52,10 +52,12 @@ g = traversal.explore(player)
 # print(dfs)
 
 # dft = traversal.dft(4)
-
-follow_dft = traversal.follow_dft(player,world,4)
-print('follow_dft', follow_dft)
-print('steps to explore room: ', len(follow_dft))
+# start_id = world.starting_room.id
+start = world.rooms[4]
+print('player starting room: ', start.id)
+follow_dft = traversal.follow_dft(player,world,start.id)
+# print('follow_dft', follow_dft)
+# print('steps to explore map: ', len(follow_dft))
 
 # traversal.add_room(room.id)
 
@@ -70,24 +72,48 @@ print('steps to explore room: ', len(follow_dft))
 
 
 # traversal_path = graph.path
+traversal_path = follow_dft
 
 
 # # TRAVERSAL TEST
-# visited_rooms = set()
+visited_rooms = set()
 # player.current_room = world.starting_room
-# visited_rooms.add(player.current_room)
+player.current_room = start
+visited_rooms.add(player.current_room)
 
-# print('room_graph', len(room_graph))
+print('room_graph length: ', len(room_graph))
+print('player starting room: ', player.current_room.id)
 
-# for move in traversal_path:
-#     player.travel(move)
-#     visited_rooms.add(player.current_room)
+for i,room_id in enumerate(traversal_path):
+    # room = world.rooms[room_id]
+    try:
+        next_step = traversal_path[i+1]
+    except IndexError:
+        next_step = -1
+    
+    waze = traversal.graph[room_id]
+    way = [way for (way,next_room_id) in waze.items() if next_room_id == next_step]
 
-# if len(visited_rooms) == len(room_graph):
-#     print(f"TESTS PASSED: {len(traversal_path)} moves, {len(visited_rooms)} rooms visited")
-# else:
-#     print("TESTS FAILED: INCOMPLETE TRAVERSAL")
-#     print(f"{len(room_graph) - len(visited_rooms)} unvisited rooms")
+    try:
+        way = way[0]
+    except:
+        break
+
+    player.travel(way)
+    visited_rooms.add(player.current_room)
+
+visits = set()
+for v in visited_rooms:
+    visits.add(v.id)
+print('visits', visits)
+print('traversal_path', traversal_path)
+
+
+if len(visited_rooms) == len(room_graph):
+    print(f"TESTS PASSED: {len(traversal_path)} moves, {len(visited_rooms)} rooms visited")
+else:
+    print("TESTS FAILED: INCOMPLETE TRAVERSAL")
+    print(f"{len(room_graph) - len(visited_rooms)} unvisited rooms")
 
 
 

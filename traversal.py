@@ -89,9 +89,6 @@ class Traversal:
         path = self.dft(start_id)
         tread = [player.current_room.id]
         for i,step in enumerate(path):
-            # print(path[i+1], self.graph[step], path[i+1] in self.graph[step].values())
-            
-            # print(tread)
 
             try:
                 next_step = path[i+1]
@@ -101,7 +98,7 @@ class Traversal:
             waze = self.graph[step]
             # next_way = {way : waze[way] for way in waze if waze[way] == next_step}
             next_way = [way for (way,room_id) in waze.items() if room_id == next_step]
-            print('next_way on the path', next_way)
+            # print('next_way on the path', next_way)
 
             try:
                 next_way = next_way[0]
@@ -111,16 +108,16 @@ class Traversal:
             if next_way != -1:
                 player.travel(next_way)
                 tread.append(player.current_room.id)
-                print('tread', tread)
+                # print('tread', tread)
             else:
-                print('player cannot access the next path step: ')
-                print('current_room', player.current_room.id)
-                print('next_step', next_step)
-                print('path', path)
+                # print('player cannot access the next path step: ')
+                # print('current_room', player.current_room.id)
+                # print('next_step', next_step)
+                # print('path', path)
                 #self.bfs() will find shortest path
                 link = self.dfs(player.current_room.id,next_step)
                 # link.pop(0) #don't travel to same room, already in the room.
-                print('link', link)
+                # print('link', link)
                 
                 if link == None:
                     return tread
@@ -143,7 +140,7 @@ class Traversal:
                     if next_step != -1:
                         player.travel(next_step)
                         tread.append(player.current_room.id)
-                        print('tread', tread)
+                        # print('tread', tread)
 
         
         
