@@ -14,36 +14,47 @@ world = World()
 # map_file = "maps/test_line.txt"
 # map_file = "maps/test_cross.txt"
 # map_file = "maps/test_loop.txt"
-# map_file = "maps/test_loop_fork.txt"
-map_file = "maps/main_maze.txt"
+map_file = "maps/test_loop_fork.txt"
+# map_file = "maps/main_maze.txt"
 
 # Loads the map into a dictionary
 room_graph=literal_eval(open(map_file, "r").read())
 world.load_graph(room_graph)
 
 # Print an ASCII map
-world.print_rooms()
+# world.print_rooms()
 
 player = Player(world.starting_room)
 
 # Fill this out with directions to walk
 # traversal_path = ['n', 'n']
 
-graph = Traversal()
+traversal = Traversal()
 start_room = player.current_room
 
 def load_rooms(world):
     for r in world.rooms:
         # print(room)
         r_id = world.rooms[r].id
-        graph.load_room(r_id)
+        traversal.load_room(r_id)
 
 load_rooms(world)
 
-start_room = player.current_room
+# start_room = player.current_room
+start_room = traversal.graph[4]
+end_room = traversal.graph[14]
+
 # traverse.dft(player)
-g = graph.explore(player)
-print(g)
+g = traversal.explore(player)
+
+# ldfs = traversal.longest_dfs(4,14)
+
+dft = traversal.dft(4)
+print(dft)
+
+
+# graph.longest_dfs()
+
 
 # def test_traverse():
 
@@ -90,25 +101,25 @@ print(g)
 #     exits.insert(3,'?')
 
 
-traversal_path = graph.path
+# traversal_path = graph.path
 
 
-# TRAVERSAL TEST
-visited_rooms = set()
-player.current_room = world.starting_room
-visited_rooms.add(player.current_room)
+# # TRAVERSAL TEST
+# visited_rooms = set()
+# player.current_room = world.starting_room
+# visited_rooms.add(player.current_room)
 
-print('room_graph', len(room_graph))
+# print('room_graph', len(room_graph))
 
-for move in traversal_path:
-    player.travel(move)
-    visited_rooms.add(player.current_room)
+# for move in traversal_path:
+#     player.travel(move)
+#     visited_rooms.add(player.current_room)
 
-if len(visited_rooms) == len(room_graph):
-    print(f"TESTS PASSED: {len(traversal_path)} moves, {len(visited_rooms)} rooms visited")
-else:
-    print("TESTS FAILED: INCOMPLETE TRAVERSAL")
-    print(f"{len(room_graph) - len(visited_rooms)} unvisited rooms")
+# if len(visited_rooms) == len(room_graph):
+#     print(f"TESTS PASSED: {len(traversal_path)} moves, {len(visited_rooms)} rooms visited")
+# else:
+#     print("TESTS FAILED: INCOMPLETE TRAVERSAL")
+#     print(f"{len(room_graph) - len(visited_rooms)} unvisited rooms")
 
 
 

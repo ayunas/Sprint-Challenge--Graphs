@@ -7,7 +7,7 @@ class Stack:
         return self.stack[-1]
     
     def pop(self):
-        if len(self.stack) > 1:
+        if len(self.stack) >= 1:
             return self.stack.pop()
         else:
             return None

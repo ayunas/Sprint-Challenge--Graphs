@@ -5,7 +5,6 @@ import random
 class Traversal:
     def __init__(self):
         self.graph = {}
-        self.stack = Stack()
         self.path = []
     
     def load_room(self,id,waze=None):
@@ -32,6 +31,7 @@ class Traversal:
             عكس = 'e'
         return عكس
     
+
     def update_rooms(self,way,old_room,new_room=None):
         if new_room == None:
             # self.log_room(old_room.id, (way,None))
@@ -48,7 +48,7 @@ class Traversal:
 
     def explore(self,player):
         room = player.current_room
-        print('starting room', room.id)
+        # print('starting room', room.id)
         # room.get_exits()
         # waze = self.graph[room.id]
         # exit_rooms = list(waze.values())
@@ -85,23 +85,96 @@ class Traversal:
                     explored.add(new_room)
                 room = new_room
         return self.graph
-
-    def dft(self,player):
-        old_room = player.current_room
-        old_exits = old_room.get_exits()
-
-        for e in old_exits:
-            player.travel(e)
-            new_room = player.current_room
-            new_exits = new_room.get_exits()
-            flip = self.flip_way(e)
-            self.log_room(new_room.id,(flip,old_room.id))
-            self.log_room(old_room.id,(e,new_room.id))
+    
+    def dft(self,start_id):
+        stack = Stack()
+        next_rooms = self.graph[start_id]
+        for way in next_rooms:
+            if next_rooms[way] != None:
+                stack.push(next_rooms[way])
         
-        waze = self.graph[new_room.id]
-        valid_waze = [room_id for room_id in list(waze.values()) if room_id != '?']
-        print(valid_waze)
-        print(self.graph)
+        visited = [start_id]
+
+        while stack.size > 0:
+            room_id = stack.pop()
+            if room_id not in visited:
+                visited.append(room_id)
+                next_rooms = self.graph[room_id]
+                for way in next_rooms:
+                    if next_rooms[way] != None:
+                        stack.push(next_rooms[way])
+        return visited
+
+    
+    def longest_dfs(self,start_room_id,end_room_id):
+        stack = Stack()
+
+        initial_path = [start_room_id]
+        stack.push(initial_path)
+        
+        visited = set()
+
+        while stack.size > 0:
+            path = stack.pop()
+            room_id = path[-1] #get latest room in the latest path
+            
+            if room_id not in visited:
+                if room_id == end_room_id:
+                    return path
+                else:
+                    visited.add(room_id)
+                
+                next_rooms = self.graph[room_id]
+
+                for way in next_rooms:
+                    # print(way,next_rooms[way])
+                    if next_rooms[way] == None:
+                        continue
+                    else:
+                        new_path = list(path)
+                        new_path.append(next_rooms[way])
+                        stack.push(new_path)
+        
+        # return self.stack
+
+        # waze = list(room.items())
+
+        # valid_waze = [(w,id) for w,id in waze if id]
+        # way,next_room_id = random.choice(valid_waze)
+
+        # if next_room_id not in visited:
+        #     if next_room_id == end_room_id:
+        #         return path
+        #     visited.add(next_room_id)
+
+        #     next_waze = self.graph[next_room_id]
+
+        #     for way in next_waze:
+        #         if next_waze[way] != None:
+        #             fresh_path = list(path)
+        #             fresh_path.append(next_waze[way])
+        #             self.stack.push(fresh_path)
+        
+                
+
+
+
+    # def dft(self,player):
+    #     old_room = player.current_room
+    #     old_exits = old_room.get_exits()
+
+    #     for e in old_exits:
+    #         player.travel(e)
+    #         new_room = player.current_room
+    #         new_exits = new_room.get_exits()
+    #         flip = self.flip_way(e)
+    #         self.log_room(new_room.id,(flip,old_room.id))
+    #         self.log_room(old_room.id,(e,new_room.id))
+        
+    #     waze = self.graph[new_room.id]
+    #     valid_waze = [room_id for room_id in list(waze.values()) if room_id != '?']
+    #     print(valid_waze)
+    #     print(self.graph)
         # while len(valid_waze):
         #     pass
     
