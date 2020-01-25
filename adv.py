@@ -46,13 +46,16 @@ end_room = traversal.graph[14]
 
 # traverse.dft(player)
 g = traversal.explore(player)
-print(g)
+# print(g)
 
-dfs = traversal.dfs(4,14)
-print(dfs)
+# dfs = traversal.dfs(4,14)
+# print(dfs)
 
-dft = traversal.dft(4)
-print(dft)
+# dft = traversal.dft(4)
+
+follow_dft = traversal.follow_dft(player,world,4)
+print('follow_dft', follow_dft)
+print('steps to explore room: ', len(follow_dft))
 
 # traversal.add_room(room.id)
 
