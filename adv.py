@@ -46,48 +46,13 @@ end_room = traversal.graph[14]
 
 # traverse.dft(player)
 g = traversal.explore(player)
+print(g)
 
-# ldfs = traversal.longest_dfs(4,14)
+dfs = traversal.dfs(4,14)
+print(dfs)
 
 dft = traversal.dft(4)
 print(dft)
-
-
-# graph.longest_dfs()
-
-
-# def test_traverse():
-
-#     traverse = Traversal()
-
-#     start_room = player.current_room
-#     traverse.log_room(start_room.id)
-#     exits = start_room.get_exits()
-#     جهة = random.choice(exits)  #in Arabic:  جهة pronounced "Jiha" means direction
-#     player.travel(جهة)
-#     next_room_id = player.current_room.id
-
-#     if جهة == 'n':
-#         back_exit = 's'
-#     if جهة == 's':
-#         back_exit = 'n'
-#     if جهة == 'e':
-#         back_exit = 'w'
-#     if جهة == 'w':
-#         back_exit = 'e'
-
-#     print('traverse', traverse)
-#     back_exit = (back_exit,start_room.id)
-#     traverse.log_room(player.current_room.id, back_exit)
-#     print('traverse', traverse)
-#     way = (جهة,player.current_room.id)
-#     traverse.log_room(start_room.id,way)
-#     print('traverse', traverse)
-
-
-#     traverse.stack.push(10)
-#     traverse.stack.push(20)
-#     traverse.dft(start_room,player)
 
 # traversal.add_room(room.id)
 
