@@ -41,20 +41,21 @@ load_rooms(world)
 random_traversal = traversal.explore(player)
 print('# of moves to randomly explore entire map: ', len(random_traversal))
 
-
 player.current_room = world.starting_room
 print('player starting room before follow_dft', player.current_room.id)
 follow_dft = traversal.follow_dft(player,world)
 
+
 ################################TRAVERSAL TEST#########################################
 player.current_room = world.starting_room
+
 traversal_path = follow_dft
 visited_rooms = set()
 visited_rooms.add(player.current_room)
 
 print('room_graph length: ', len(room_graph))
 print('player starting room: ', player.current_room.id)
-# print('follow_dft', follow_dft)
+# print('traversal_path', follow_dft)
 
 for i,room_id in enumerate(traversal_path):
     try:
