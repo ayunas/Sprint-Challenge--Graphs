@@ -14,8 +14,8 @@ world = World()
 # map_file = "maps/test_line.txt"
 # map_file = "maps/test_cross.txt"
 # map_file = "maps/test_loop.txt"
-map_file = "maps/test_loop_fork.txt"
-# map_file = "maps/main_maze.txt"
+# map_file = "maps/test_loop_fork.txt"
+map_file = "maps/main_maze.txt"
 
 # Loads the map into a dictionary
 room_graph=literal_eval(open(map_file, "r").read())
@@ -54,7 +54,7 @@ visited_rooms.add(player.current_room)
 
 print('room_graph length: ', len(room_graph))
 print('player starting room: ', player.current_room.id)
-print('follow_dft', follow_dft)
+# print('follow_dft', follow_dft)
 
 for i,room_id in enumerate(traversal_path):
     try:

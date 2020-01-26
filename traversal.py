@@ -51,7 +51,7 @@ class Traversal:
             return (self.graph[old_room.id],self.graph[new_room.id])
 
     def explore(self,player):
-        print('player starting room in explore', player.current_room.id)
+        # print('player starting room in explore', player.current_room.id)
         room = player.current_room
         explored = set()
         path = []
@@ -86,11 +86,11 @@ class Traversal:
         # world.print_rooms()
 
         start_id = player.current_room.id
-        print('starting room in follow_dft', start_id)
+        # print('starting room in follow_dft', start_id)
         # player.current_room = world.rooms[start_id]
         path = self.dft(start_id)
         # path = self.bft(start_id)
-        print('bft path', path)
+        # print('bft path', path)
         tread = [player.current_room.id]
         for i,step in enumerate(path):
             try:
@@ -101,8 +101,8 @@ class Traversal:
             waze = self.graph[step]
             # next_way = {way : waze[way] for way in waze if waze[way] == next_step}
             next_way = [way for (way,room_id) in waze.items() if room_id == next_step]
-            print('room', step)
-            print('exits',waze)
+            # print('room', step)
+            # print('exits',waze)
 
 
             try:
@@ -110,23 +110,23 @@ class Traversal:
             except IndexError: #the player doesnt have access to the next room
                 next_way = -1
                 # next_way = step #path[i]
-                print('no next way in path', next_way)
+                # print('no next way in path', next_way)
 
             if next_way != -1:
                 player.travel(next_way)
                 tread.append(player.current_room.id)
                 # print('tread', tread)
             else:
-                print('player cannot access the next room in path.  need a link')
-                print('current room', player.current_room.id)
-                print('next room in path', next_step)
+                # print('player cannot access the next room in path.  need a link')
+                # print('current room', player.current_room.id)
+                # print('next room in path', next_step)
 
                 ####'''Depth First Search & Breadth First Search both work for backtracking. ####
                 #### Choose either to see differences in moves'''####
 
                 # link = self.dfs(player.current_room.id,next_step)
                 link = self.bfs(player.current_room.id,next_step)
-                print('link', link)
+                # print('link', link)
                 
                 # if link == None:
                 #     return tread
@@ -148,7 +148,7 @@ class Traversal:
 
                     if next_step != -1:
                         player.travel(next_step)
-                        print('next room', player.current_room.id)
+                        # print('next room', player.current_room.id)
                         tread.append(player.current_room.id)
                         # print('tread', tread)
         return tread
@@ -195,7 +195,7 @@ class Traversal:
     def dfs(self,start_room_id,end_room_id):
         stack = Stack()
 
-        print('end_room_id in dfs', end_room_id)
+        # print('end_room_id in dfs', end_room_id)
         initial_path = [start_room_id]
         stack.push(initial_path)
 
@@ -227,7 +227,7 @@ class Traversal:
 
 
     def bfs(self,start_room_id,end_room_id):
-        print('end_room_id in bfs', end_room_id)
+        # print('end_room_id in bfs', end_room_id)
 
         queue = Queue()
         
