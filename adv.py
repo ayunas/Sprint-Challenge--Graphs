@@ -46,26 +46,10 @@ player.current_room = world.starting_room
 print('player starting room before follow_dft', player.current_room.id)
 follow_dft = traversal.follow_dft(player,world)
 
-# bfs = traversal.bfs(2,2)
-# print('bfs', bfs)
-# dfs = traversal.dfs(5,1)
-# print('dfs', dfs)
-
-# bfs2 = traversal.bfs(17,12)
-# print('bfs', bfs2)
-# dfs2 = traversal.dfs(17,12)
-# print('dfs', dfs2)
-
-# bfs3 = traversal.bfs(12,2)
-# print('bfs', bfs3)
-# dfs3 = traversal.dfs(12,2)
-# print('dfs', dfs3)
 ################################TRAVERSAL TEST#########################################
 player.current_room = world.starting_room
 traversal_path = follow_dft
 visited_rooms = set()
-# player.current_room = world.starting_room
-# player.current_room = start
 visited_rooms.add(player.current_room)
 
 print('room_graph length: ', len(room_graph))
@@ -73,7 +57,6 @@ print('player starting room: ', player.current_room.id)
 print('follow_dft', follow_dft)
 
 for i,room_id in enumerate(traversal_path):
-    # room = world.rooms[room_id]
     try:
         next_step = traversal_path[i+1]
     except IndexError:

@@ -89,6 +89,8 @@ class Traversal:
         print('starting room in follow_dft', start_id)
         # player.current_room = world.rooms[start_id]
         path = self.dft(start_id)
+        # path = self.bft(start_id)
+        print('bft path', path)
         tread = [player.current_room.id]
         for i,step in enumerate(path):
             try:
@@ -119,9 +121,10 @@ class Traversal:
                 print('current room', player.current_room.id)
                 print('next room in path', next_step)
 
+                ####'''Depth First Search & Breadth First Search both work for backtracking. ####
+                #### Choose either to see differences in moves'''####
+
                 # link = self.dfs(player.current_room.id,next_step)
-                # if next_step == -1:
-                #     break
                 link = self.bfs(player.current_room.id,next_step)
                 print('link', link)
                 
@@ -169,7 +172,26 @@ class Traversal:
                         stack.push(next_rooms[way])
         return visited
 
-    
+    def bft(self,start_room_id):
+        queue = Queue()
+        waze = self.graph[start_room_id]
+        for way in waze:
+            if waze[way] != None:
+                queue.enque(waze[way])
+        
+        visited = [start_room_id]
+
+        while queue.size > 0:
+            room_id = queue.deque()
+            if room_id not in visited:
+                visited.append(room_id)
+                waze = self.graph[room_id]
+                for way in waze:
+                    if waze[way] != None:
+                        queue.enque(waze[way])
+        return visited
+
+
     def dfs(self,start_room_id,end_room_id):
         stack = Stack()
 
